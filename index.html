@@ -454,77 +454,7 @@
     setTimeout(() => { svg.style.animation = `float ${2.4+i*0.25}s ease-in-out infinite`; }, 1600+i*100);
   });
 
-  // ── ANALYTICS LOGGING ──
-  const LOG_ENDPOINT = 'http://localhost:3000/api/log';
-  const EMAIL_LOG_ENDPOINT = 'http://localhost:3000/api/send-email';
-
-  const getDeviceCategory = ua => {
-    if (/Mobi|Android/i.test(ua)) return 'mobile';
-    if (/iPad|Tablet/i.test(ua)) return 'tablet';
-    return 'desktop';
-  };
-
-  function sendLog(eventType, details = {}) {
-    const payload = {
-      eventType,
-      details,
-      url: window.location.href,
-      userAgent: navigator.userAgent,
-      device: getDeviceCategory(navigator.userAgent),
-      occurredAt: new Date().toISOString(),
-    };
-
-    if (navigator.sendBeacon) {
-      const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-      navigator.sendBeacon(LOG_ENDPOINT, blob);
-      return;
-    }
-
-    fetch(LOG_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).catch(() => {});
-  }
-
-  function logEmailClick() {
-    const payload = {
-      eventType: 'email_click',
-      details: { method: 'mailto' },
-      url: window.location.href,
-      userAgent: navigator.userAgent,
-      device: getDeviceCategory(navigator.userAgent),
-      occurredAt: new Date().toISOString(),
-    };
-
-    fetch(EMAIL_LOG_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).catch(() => {});
-  }
-
-  // Send a view event on load
-  window.addEventListener('load', () => sendLog('page_view'));
-
-  // Global click event logging
-  document.addEventListener('click', event => {
-    const target = event.target;
-    sendLog('click', {
-      tag: target.tagName.toLowerCase(),
-      text: (target.textContent || '').trim().slice(0, 120),
-      id: target.id || null,
-      classes: target.className || null,
-    });
-  });
-
-  // Email button click
-  const emailButton = document.querySelector('.btn-email-main');
-  if (emailButton) {
-    emailButton.addEventListener('click', () => {
-      logEmailClick();
-    });
-  }
+  // (Analytics logging removed — frontend only, no backend DB calls)
 
 </script>
 </body>
