@@ -333,7 +333,7 @@
           </div>
           <div>
             <div class="ci-label">Email</div>
-            <div class="ci-val">ljesalva1@gmail.com</div>
+            <div class="ci-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9c5c3ccdac8c5dfc898e9cec4c8c0c587cac6c4">[email&#160;protected]</a></div>
           </div>
         </div>
 
@@ -386,10 +386,20 @@
         <span class="tag">UI/UX Design</span>
         <span class="tag">Maintenance &amp; Support</span>
       </div>
-      <a class="btn-email-main" href="mailto:ljesalva1@gmail.com">
+      <button class="btn-email-main" id="openContactForm" type="button">
         <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Email Me
-      </a>
+        Send Inquiry
+      </button>
+
+      <div id="contactFormContainer" style="display:none; margin-top:16px; gap:8px; flex-direction:column;">
+        <input id="contactName" type="text" placeholder="Your name" style="padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.18); color:#fff; font-family:'Outfit',sans-serif;" />
+        <input id="contactEmail" type="email" placeholder="Your email" style="padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.18); color:#fff; font-family:'Outfit',sans-serif;" />
+        <textarea id="contactMessage" rows="3" placeholder="Project details" style="padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.18); color:#fff; font-family:'Outfit',sans-serif; resize:none;"></textarea>
+        <button id="sendEmailBtn" class="btn-email-main" type="button">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Send Email
+        </button>
+      </div>
     </div>
   </div>
 
@@ -404,7 +414,7 @@
   <div class="smiley-face"></div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── SMILEY follows cursor, returns to center when idle ──
   const smiley = document.getElementById('smiley');
   let cx = window.innerWidth/2, cy = window.innerHeight/2;
@@ -454,8 +464,70 @@
     setTimeout(() => { svg.style.animation = `float ${2.4+i*0.25}s ease-in-out infinite`; }, 1600+i*100);
   });
 
-  // (Analytics logging removed — frontend only, no backend DB calls)
+  // ── CONTACT FORM + EMAILJS ──
+  const contactFormContainer = document.getElementById('contactFormContainer');
+  const openContactFormBtn   = document.getElementById('openContactForm');
+  const sendEmailBtn         = document.getElementById('sendEmailBtn');
 
+  openContactFormBtn?.addEventListener('click', () => {
+    openContactFormBtn.style.display = 'none';
+    contactFormContainer.style.display = 'flex';
+    document.getElementById('contactName').focus();
+  });
+
+  async function sendContactEmail() {
+    const name    = (document.getElementById('contactName')?.value    || '').trim() || 'Website Visitor';
+    const email   = (document.getElementById('contactEmail')?.value   || '').trim();
+    const message = (document.getElementById('contactMessage')?.value || '').trim() || 'I would like to discuss a website project.';
+
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address so Leimar can reply to you.');
+      document.getElementById('contactEmail').focus();
+      return;
+    }
+
+    const serviceId  = 'service_1a24k9n';
+    const templateId = 'template_a9p8z0i';
+    const userId     = 'jIg--0kAvQnORZc86';
+
+    const templateParams = {
+      from_name:  name,
+      from_email: email,
+      to_name:    'Leimar',
+      to_email:   'ljesalva1@gmail.com',
+      subject:    'Web project inquiry from ' + name,
+      message:    message,
+    };
+
+    sendEmailBtn.textContent = 'Sending...';
+    sendEmailBtn.disabled = true;
+
+    try {
+      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ service_id: serviceId, template_id: templateId, user_id: userId, template_params: templateParams }),
+      });
+
+      if (!res.ok) throw new Error('EmailJS failed ' + res.status);
+
+      alert('Inquiry sent! Leimar will reply to ' + email + ' soon.');
+      document.getElementById('contactName').value    = '';
+      document.getElementById('contactEmail').value   = '';
+      document.getElementById('contactMessage').value = '';
+      contactFormContainer.style.display = 'none';
+      openContactFormBtn.style.display   = 'inline-flex';
+    } catch (err) {
+      console.error('Email send failed:', err);
+      const body = encodeURIComponent('Hi Leimar,' + message + 'From: ' + name + 'Reply to: ' + email);
+      window.location.href = 'mailto:ljesalva1@gmail.com?subject=' + encodeURIComponent('Web project inquiry') + '&body=' + body;
+    } finally {
+      sendEmailBtn.innerHTML = '<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Send Email';
+      sendEmailBtn.disabled = false;
+    }
+  }
+
+  sendEmailBtn?.addEventListener('click', sendContactEmail);
 </script>
 </body>
 </html>
