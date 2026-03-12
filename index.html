@@ -40,7 +40,6 @@
   .cross-h { width:100%; height:1px; top:50%; }
   .cross-v { height:100%; width:1px; left:50%; top:0; }
 
-  /* ── CELLS ── */
   .cell {
     position:relative; z-index:2; overflow:hidden; cursor:default;
     animation: rise 0.9s calc(var(--ci)*0.1s) cubic-bezier(.16,1,.3,1) both;
@@ -58,39 +57,26 @@
   .cell-intro   { border-bottom:1px solid var(--border); }
   .cell-contact { border-right:1px solid var(--border); }
 
-  /* ── MEDIA LAYER (full-cover image or video) ── */
-  .cell-media {
-    position:absolute; inset:0; z-index:0;
-  }
-  .cell-media img,
-  .cell-media video {
-    width:100%; height:100%; object-fit:cover; display:block;
-  }
-  /* fallback gradient shown when no real file yet */
+  .cell-media { position:absolute; inset:0; z-index:0; }
+  .cell-media img, .cell-media video { width:100%; height:100%; object-fit:cover; display:block; }
   .cell-media.hero-fallback    { background:linear-gradient(135deg,#dbeafe 0%,#ede9fe 50%,#fce7f3 100%); }
   .cell-media.intro-fallback   { background:linear-gradient(160deg,#0f172a 0%,#1e3a8a 60%,#312e81 100%); }
   .cell-media.contact-fallback { background:linear-gradient(160deg,#0f172a 0%,#1a1a2e 60%,#16213e 100%); }
   .cell-media.cta-fallback     { background:linear-gradient(135deg,#e0f2fe 0%,#d1fae5 50%,#ede9fe 100%); }
 
-  /* dark scrim for text readability on dark cells */
-  .cell-media-scrim {
-    position:absolute; inset:0; z-index:1; pointer-events:none;
-  }
+  .cell-media-scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
   .cell-intro   .cell-media-scrim { background:linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 100%); }
   .cell-contact .cell-media-scrim { background:linear-gradient(to top, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.20) 100%); }
   .cell-hero    .cell-media-scrim { background:linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.05) 100%); }
   .cell-cta     .cell-media-scrim { background:linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.05) 100%); }
 
-  /* ── CONTENT LAYER ── */
   .cell-content {
     position:absolute; inset:0; z-index:2;
     display:flex; flex-direction:column; justify-content:flex-end;
     padding:clamp(22px,4vw,50px);
   }
-  .cell-intro .cell-content,
-  .cell-contact .cell-content { justify-content:center; }
+  .cell-intro .cell-content, .cell-contact .cell-content { justify-content:center; }
 
-  /* ── HERO ── */
   .hero-tag {
     display:inline-flex; align-items:center; gap:7px;
     background:rgba(255,255,255,0.82); border:1px solid #bbf7d0;
@@ -105,15 +91,13 @@
   .hero-name {
     font-family:'Bebas Neue',sans-serif;
     font-size:clamp(48px,6.5vw,88px); line-height:0.88; letter-spacing:0.03em;
-    color:#fff; text-shadow:0 2px 20px rgba(0,0,0,0.3);
-    margin-bottom:10px;
+    color:#fff; text-shadow:0 2px 20px rgba(0,0,0,0.3); margin-bottom:10px;
   }
   .hero-role {
     font-size:clamp(10px,1vw,12px); font-weight:600;
     letter-spacing:0.18em; text-transform:uppercase; color:#93c5fd;
   }
 
-  /* ── INTRO ── */
   .intro-label {
     font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
     color:rgba(255,255,255,0.4); margin-bottom:12px;
@@ -124,7 +108,6 @@
   }
   .intro-text strong { color:#fff; font-weight:600; }
 
-  /* scan lines */
   .cell-intro::before, .cell-contact::before {
     content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
     background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,0.012) 3px,rgba(255,255,255,0.012) 4px);
@@ -132,7 +115,6 @@
   }
   @keyframes scanMove { from{background-position:0 0} to{background-position:0 100px} }
 
-  /* particles */
   .particle {
     position:absolute; border-radius:50%; pointer-events:none; z-index:2;
     background:rgba(99,102,241,0.35);
@@ -144,7 +126,6 @@
     100% { transform:translate(var(--dx2,-10px),var(--dy2,-100px)) scale(0.6); opacity:0; }
   }
 
-  /* ── CONTACT ── */
   .section-label {
     font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
     color:rgba(255,255,255,0.4); margin-bottom:16px;
@@ -182,26 +163,14 @@
   .ci-val   { font-size:13px; font-weight:500; color:rgba(255,255,255,0.88); }
   .ci-sub   { font-size:11px; color:rgba(255,255,255,0.35); margin-top:2px; }
 
-  /* ── EMAIL MAILTO BUTTON ── */
-  .email-btn {
-    display:inline-flex; align-items:center; gap:7px;
-    margin-top:9px;
-    background:linear-gradient(135deg,rgba(37,99,235,0.35),rgba(124,58,237,0.3));
-    border:1px solid rgba(99,102,241,0.4);
-    border-radius:9px; padding:7px 15px;
-    font-family:'Outfit',sans-serif; font-size:11.5px; font-weight:600;
-    letter-spacing:0.06em; text-transform:uppercase;
-    color:#c7d2fe; cursor:pointer; text-decoration:none;
-    transition:background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  /* Facebook link style */
+  .ci-link {
+    font-size:13px; font-weight:500; color:#93c5fd;
+    text-decoration:none;
+    transition:color 0.2s;
   }
-  .email-btn:hover {
-    background:linear-gradient(135deg,rgba(37,99,235,0.55),rgba(124,58,237,0.45));
-    border-color:rgba(99,102,241,0.65); color:#e0e7ff;
-    transform:translateY(-1px); box-shadow:0 4px 16px rgba(99,102,241,0.3);
-  }
-  .email-btn svg { width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+  .ci-link:hover { color:#bfdbfe; text-decoration:underline; }
 
-  /* ── CTA CELL ── */
   .section-label-light {
     font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
     color:rgba(255,255,255,0.5); margin-bottom:12px;
@@ -228,13 +197,7 @@
   .btn-email-main:hover { transform:translateY(-2px); box-shadow:0 8px 36px rgba(37,99,235,0.5); }
   .btn-email-main svg { width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
-  /* ── SMILEY FOLLOWER ── */
-  .smiley {
-    position:fixed; top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    width:52px; height:52px;
-    z-index:100; pointer-events:none;
-  }
+  .smiley { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:52px; height:52px; z-index:100; pointer-events:none; }
   .smiley-face {
     width:52px; height:52px; border-radius:50%;
     background:linear-gradient(135deg,#fbbf24,#f59e0b);
@@ -260,7 +223,6 @@
     border-radius:0 0 11px 11px;
   }
 
-  /* ── HASHTAGS ── */
   .hashtags {
     position:absolute; bottom:20px; right:28px; z-index:10;
     font-size:11px; color:rgba(255,255,255,0.5); text-align:right; line-height:1.9;
@@ -278,11 +240,10 @@
   <div class="cross-h"></div>
   <div class="cross-v"></div>
 
-  <!-- ══ Q1: HERO — replace src with your IMAGE file ══ -->
+  <!-- Q1: HERO -->
   <div class="cell cell-hero" style="--ci:0">
     <div class="cell-media hero-fallback">
       <img src="me.jpg" alt="Hero">
-
     </div>
     <div class="cell-media-scrim"></div>
     <div class="cell-content">
@@ -292,11 +253,10 @@
     </div>
   </div>
 
-  <!-- ══ Q2: INTRO — replace src with your VIDEO file ══ -->
+  <!-- Q2: INTRO -->
   <div class="cell cell-intro" style="--ci:1">
     <div class="cell-media intro-fallback">
       <video autoplay muted loop playsinline src="web.mp4"></video>
-
     </div>
     <div class="cell-media-scrim"></div>
     <div class="particle" style="width:6px;height:6px;bottom:25%;left:15%;--dt:7s;--dx1:30px;--dy1:-40px;--dx2:-10px;--dy2:-90px;"></div>
@@ -306,16 +266,14 @@
       <div class="intro-label">About</div>
       <p class="intro-text">
         I am a freelance <strong>Developer</strong> who creates, <strong>websites for businesses and individuals. I focus on building clean, functional, and visually appealing websites</strong> that help clients strengthen their online presence. My goal is to deliver<strong> reliable, high-quality</strong> websites optimized for <strong> and a smooth user experience.</strong>
-
       </p>
     </div>
   </div>
 
-  <!-- ══ Q3: CONTACT — replace src with your VIDEO file ══ -->
+  <!-- Q3: CONTACT -->
   <div class="cell cell-contact" style="--ci:2">
     <div class="cell-media contact-fallback">
       <video autoplay muted loop playsinline src="web1.mp4"></video>
-
     </div>
     <div class="cell-media-scrim"></div>
     <div class="particle" style="width:5px;height:5px;bottom:30%;left:10%;--dt:8s;--dx1:20px;--dy1:-40px;--dx2:-5px;--dy2:-85px;animation-delay:-1s;"></div>
@@ -324,19 +282,21 @@
       <div class="section-label">Contact &amp; Info</div>
       <div class="contact-list">
 
+        <!-- FACEBOOK (replaced email icon) -->
         <div class="contact-item">
           <div class="icon-box">
-            <svg style="--dd:0.3s" viewBox="0 0 24 24">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
+            <!-- Facebook "f" icon -->
+            <svg style="--dd:0.3s" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
             </svg>
           </div>
           <div>
-            <div class="ci-label">Email</div>
-            <div class="ci-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a9c5c3ccdac8c5dfc898e9cec4c8c0c587cac6c4">[email&#160;protected]</a></div>
+            <div class="ci-label">Facebook</div>
+            <a class="ci-link" href="https://www.facebook.com/leiii2003" target="_blank" rel="noopener noreferrer">Leimar Lascano Jesalva</a>
           </div>
         </div>
 
+        <!-- LOCATION -->
         <div class="contact-item">
           <div class="icon-box">
             <svg style="--dd:0.44s" viewBox="0 0 24 24">
@@ -351,6 +311,7 @@
           </div>
         </div>
 
+        <!-- BUDGET -->
         <div class="contact-item">
           <div class="icon-box">
             <svg style="--dd:0.58s" viewBox="0 0 24 24">
@@ -369,11 +330,10 @@
     </div>
   </div>
 
-  <!-- ══ Q4: CTA — replace src with your IMAGE file ══ -->
+  <!-- Q4: CTA -->
   <div class="cell cell-cta" style="--ci:3">
-    <div class="cell-media cta-fallback">     
+    <div class="cell-media cta-fallback">
       <video autoplay muted loop playsinline src="web2.mp4"></video>
-
     </div>
     <div class="cell-media-scrim"></div>
     <div class="cell-content">
@@ -414,8 +374,7 @@
   <div class="smiley-face"></div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── SMILEY follows cursor, returns to center when idle ──
+<script>
   const smiley = document.getElementById('smiley');
   let cx = window.innerWidth/2, cy = window.innerHeight/2;
   let tx = cx, ty = cy;
@@ -439,7 +398,6 @@
     requestAnimationFrame(tick);
   })();
 
-  // ── CELL SHINE ──
   document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('mousemove', e => {
       const r = cell.getBoundingClientRect();
@@ -448,7 +406,6 @@
     });
   });
 
-  // ── CONTACT ITEM TILT ──
   document.querySelectorAll('.contact-item').forEach(el => {
     el.addEventListener('mousemove', e => {
       const r = el.getBoundingClientRect();
@@ -459,12 +416,10 @@
     el.addEventListener('mouseleave', () => { el.style.transform = ''; });
   });
 
-  // ── FLOAT ICONS ──
   document.querySelectorAll('.icon-box svg').forEach((svg, i) => {
     setTimeout(() => { svg.style.animation = `float ${2.4+i*0.25}s ease-in-out infinite`; }, 1600+i*100);
   });
 
-  // ── CONTACT FORM + EMAILJS ──
   const contactFormContainer = document.getElementById('contactFormContainer');
   const openContactFormBtn   = document.getElementById('openContactForm');
   const sendEmailBtn         = document.getElementById('sendEmailBtn');
